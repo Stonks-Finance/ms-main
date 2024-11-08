@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockPredictorStockPredictionDTO 
+public class StockPredictorSimpleStockDTO 
 {
     private List<Double> prices; 
     private List<String> timestamps; 

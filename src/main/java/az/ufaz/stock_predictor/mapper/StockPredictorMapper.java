@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockPredictionDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
 
 @Mapper(componentModel = "spring")
 public interface StockPredictorMapper 
 {
     public default List<SimpleStockResponse> predictionDTOToListOfStockResponse(
-        StockPredictorStockPredictionDTO stockPredictionDTO
+        StockPredictorSimpleStockDTO stockPredictionDTO
     ){
         List<SimpleStockResponse> stockResponses = new ArrayList<>(); 
         int length = stockPredictionDTO.getPrices().size(); 

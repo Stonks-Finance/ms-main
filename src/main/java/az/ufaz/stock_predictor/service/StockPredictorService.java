@@ -9,7 +9,7 @@ import az.ufaz.stock_predictor.client.StockPredictorAIClient;
 import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
-import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockPredictionDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionInterval;
@@ -27,7 +27,7 @@ public class StockPredictorService
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
         String stockName, StockPredictionInterval interval, int duration
     ){
-        StockPredictorBaseDTO<StockPredictorStockPredictionDTO> prediction; 
+        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction; 
         String intervalString; 
 
         if (duration <= 0) 
