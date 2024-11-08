@@ -1,17 +1,25 @@
 package az.ufaz.stock_predictor.mapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorDetailedStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
+import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
 
 @Mapper(componentModel = "spring")
 public interface StockPredictorMapper 
 {
+    @Mapping(source = "date", target = "date", qualifiedByName = "stringToLocalDate")
+    public DetailedStockResponse clientDTOToResponse(StockPredictorDetailedStockDTO clientDTO); 
+
     public default List<SimpleStockResponse> predictionDTOToListOfStockResponse(
         StockPredictorSimpleStockDTO stockPredictionDTO
     ){
@@ -35,5 +43,11 @@ public interface StockPredictorMapper
     {
         String dateTimeWithoutOffset = timeString.substring(0, 19);
         return LocalDateTime.parse(dateTimeWithoutOffset);
+    }
+
+    @Named(value = "stringToLocalDate")
+    public default LocalDate stringToLocalDate(String timeString)
+    {
+        return LocalDate.parse(timeString); 
     }
 }

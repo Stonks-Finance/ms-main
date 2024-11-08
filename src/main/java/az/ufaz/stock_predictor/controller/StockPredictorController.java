@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
+import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
-import az.ufaz.stock_predictor.model.enums.StockPredictionInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
 import az.ufaz.stock_predictor.service.StockPredictorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,7 @@ public class StockPredictorController
     @ResponseStatus(value = HttpStatus.OK)
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
         @RequestParam(value = "stock_name", required = true) String stockName, 
-        @RequestParam(value = "interval", required = false) StockPredictionInterval interval,
+        @RequestParam(value = "interval", required = false) StockPredictionShortInterval interval,
         @RequestParam(value = "duration", required =  false) int duration
     ){
         log.info(LOG_TEMPLATE, "GET", "/predict");
@@ -39,12 +41,24 @@ public class StockPredictorController
 
     @GetMapping(value = "/past-values/simple")
     @ResponseStatus(value = HttpStatus.OK)
-    public BaseResponse<List<SimpleStockResponse>> getPastValuesForPrediction(
+    public BaseResponse<List<SimpleStockResponse>> getPastValuesOfSimpleStock(
         @RequestParam(value = "stock_name", required = true) String stockName,
-        @RequestParam(value = "interval", required = false) StockPredictionInterval interval,
+        @RequestParam(value = "interval", required = false) StockPredictionShortInterval interval,
         @RequestParam(value = "duration", required =  false) int duration 
     ){
         log.info(LOG_TEMPLATE, "GET", "/past-values/simple");
         return stockPredictorService.getPastValuesOfSimpleStock(stockName, interval, duration); 
     }
+
+    @GetMapping(value = "/past-values/detailed")
+    @ResponseStatus(value = HttpStatus.OK)
+    public BaseResponse<List<DetailedStockResponse>> getPastValuesOfDetailedStock(
+        @RequestParam(value = "stock_name", required = true) String stockName,
+        @RequestParam(value = "interval", required = false) StockPredictionLongInterval interval,
+        @RequestParam(value = "duration", required =  false) int duration 
+    ){
+        log.info(LOG_TEMPLATE, "GET", "/past-values/detailed");
+        return stockPredictorService.getPastValuesOfDetailedStock(stockName, interval, duration);
+    }
+
 }

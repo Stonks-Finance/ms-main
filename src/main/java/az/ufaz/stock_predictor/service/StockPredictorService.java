@@ -2,6 +2,7 @@ package az.ufaz.stock_predictor.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,13 @@ import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.exception.UnacceptableInputException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorDetailedStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
+import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
-import az.ufaz.stock_predictor.model.enums.StockPredictionInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +31,7 @@ public class StockPredictorService
     private final StockPredictorAIClient stockPredictorAIClient;
     private final StockPredictorMapper stockPredictorMapper; 
 
-    private Optional<String> getStockPredictionIntervalString(StockPredictionInterval interval)
+    private Optional<String> getStockPredictionShortIntervalString(StockPredictionShortInterval interval)
     {
         switch(interval)
         {
@@ -40,8 +44,21 @@ public class StockPredictorService
         }
     }
 
+    private Optional<String> getStockPredictionLongIntervalString(StockPredictionLongInterval interval)
+    {
+        switch(interval)
+        {
+            case ONE_DAY: 
+                return Optional.of("1d"); 
+            case ONE_MONTH: 
+                return Optional.of("1m");
+            default: 
+                return Optional.empty(); 
+        }
+    }
+
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
-        String stockName, StockPredictionInterval interval, int duration
+        String stockName, StockPredictionShortInterval interval, int duration
     ){
         StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction; 
 
@@ -52,7 +69,7 @@ public class StockPredictorService
             throw new UnacceptableInputException(message); 
         }
 
-        String intervalString = getStockPredictionIntervalString(interval).orElseThrow(() -> {
+        String intervalString = getStockPredictionShortIntervalString(interval).orElseThrow(() -> {
             String message = "The interval entered is invalid."; 
             log.info("Error in stock prediction : {}", message); 
             return new UnacceptableInputException(message);
@@ -81,7 +98,7 @@ public class StockPredictorService
     }
 
     public BaseResponse<List<SimpleStockResponse>> getPastValuesOfSimpleStock(
-        String stockName, StockPredictionInterval interval, int duration 
+        String stockName, StockPredictionShortInterval interval, int duration 
     ){
         StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction;
 
@@ -92,7 +109,7 @@ public class StockPredictorService
             throw new UnacceptableInputException(message); 
         }
 
-        String intervalString = getStockPredictionIntervalString(interval).orElseThrow(() -> {
+        String intervalString = getStockPredictionShortIntervalString(interval).orElseThrow(() -> {
             String message = "The interval entered is invalid."; 
             log.info("Error in stock prediction : {}", message); 
             return new UnacceptableInputException(message);
@@ -110,9 +127,49 @@ public class StockPredictorService
             prediction.getData()
         );
 
-        log.info("Past values made successfully for stock prediction: {}, interval: {}, duration: {}.", stockName, interval, duration);
+        log.info("Past values made successfully for simple stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
 
         return BaseResponse.<List<SimpleStockResponse>>builder()
+                .data(stockResponses)
+                .message("Past values made successfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+    }
+
+    public BaseResponse<List<DetailedStockResponse>> getPastValuesOfDetailedStock(
+        String stockName, StockPredictionLongInterval interval, int duration
+    ){
+        StockPredictorBaseDTO<List<StockPredictorDetailedStockDTO>> prediction;
+
+        if (duration <= 0) 
+        {
+            String message = "Duration must be greater than 0."; 
+            log.info("Error in stock prediction : {}", message);
+            throw new UnacceptableInputException(message); 
+        }
+
+        String intervalString = getStockPredictionLongIntervalString(interval).orElseThrow(() -> {
+            String message = "The interval entered is invalid."; 
+            log.info("Error in stock prediction : {}", message); 
+            return new UnacceptableInputException(message);
+        });
+
+        prediction = stockPredictorAIClient.getPastValuesOfDetailedStock(stockName, intervalString, duration);
+
+        if (!prediction.isSuccess())
+        {
+            log.info("Error in stock prediction : {}", prediction.getMessage());
+            throw new PastStockValuesException(prediction.getMessage());
+        }
+
+        List<DetailedStockResponse> stockResponses = prediction.getData().stream().map(
+            stockPredictorMapper::clientDTOToResponse
+        ).collect(Collectors.toList());
+
+        log.info("Past values made successfully for detailed stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
+
+        return BaseResponse.<List<DetailedStockResponse>>builder()
                 .data(stockResponses)
                 .message("Past values made successfully.")
                 .status(HttpStatus.OK.value())
