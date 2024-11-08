@@ -16,4 +16,11 @@ public interface StockPredictorAIClient
         @RequestParam(value = "interval", required = false) String interval, 
         @RequestParam(value = "duration", required =  false) int duration
     ); 
+
+    @GetMapping(value = "/past-values")
+    public StockPredictorBaseDTO<StockPredictorSimpleStockDTO> getPastValuesOfSimpleStock(
+        @RequestParam(value = "stock_name", required = true) String stockName,
+        @RequestParam(value = "interval", required = false) String interval,
+        @RequestParam(value = "duration", required =  false) int duration
+    );
 }

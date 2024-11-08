@@ -20,4 +20,26 @@ public class GlobalExceptionHandler
                 .status(HttpStatus.BAD_REQUEST.value())
                 .build(); 
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = PastStockValuesException.class)
+    public BaseResponse<Void> handlePastStockValuesException(PastStockValuesException exception)
+    {
+        return BaseResponse.<Void>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(value = UnacceptableInputException.class)
+    public BaseResponse<Void> handleUnacceptableInputException(UnacceptableInputException exception)
+    {
+        return BaseResponse.<Void>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .status(HttpStatus.NOT_ACCEPTABLE.value())
+                .build();
+    }
 }

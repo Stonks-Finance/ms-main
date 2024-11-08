@@ -36,4 +36,15 @@ public class StockPredictorController
         log.info(LOG_TEMPLATE, "GET", "/predict");
         return stockPredictorService.getStockPrediction(stockName, interval, duration); 
     }
+
+    @GetMapping(value = "/past-values/simple")
+    @ResponseStatus(value = HttpStatus.OK)
+    public BaseResponse<List<SimpleStockResponse>> getPastValuesForPrediction(
+        @RequestParam(value = "stock_name", required = true) String stockName,
+        @RequestParam(value = "interval", required = false) StockPredictionInterval interval,
+        @RequestParam(value = "duration", required =  false) int duration 
+    ){
+        log.info(LOG_TEMPLATE, "GET", "/past-values/simple");
+        return stockPredictorService.getPastValuesOfSimpleStock(stockName, interval, duration); 
+    }
 }
