@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
 import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
 import az.ufaz.stock_predictor.service.StockPredictorService;
@@ -28,14 +30,14 @@ public class StockPredictorController
 
     private final String LOG_TEMPLATE = "{} request to /api/v1/stock_predictor{}";
 
-    @GetMapping(value = "/predict")
+    @PostMapping(value = "/predict")
     @ResponseStatus(value = HttpStatus.OK)
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
         @RequestParam(value = "stock_name", required = true) String stockName, 
         @RequestParam(value = "interval", required = false) StockPredictionShortInterval interval,
         @RequestParam(value = "duration", required =  false) int duration
     ){
-        log.info(LOG_TEMPLATE, "GET", "/predict");
+        log.info(LOG_TEMPLATE, "POST", "/predict");
         return stockPredictorService.getStockPrediction(stockName, interval, duration); 
     }
 
@@ -59,6 +61,13 @@ public class StockPredictorController
     ){
         log.info(LOG_TEMPLATE, "GET", "/past-values/detailed");
         return stockPredictorService.getPastValuesOfDetailedStock(stockName, interval, duration);
+    }
+
+    @GetMapping("/stock-overview")
+    public BaseResponse<List<StockOverviewResponse>> getStockOverview()
+    {
+        log.info(LOG_TEMPLATE, "GET", "/stock-overview");
+        return stockPredictorService.getStockOverview();
     }
 
 }

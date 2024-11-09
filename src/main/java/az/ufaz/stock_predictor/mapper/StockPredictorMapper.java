@@ -11,14 +11,18 @@ import org.mapstruct.Named;
 
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorDetailedStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockOverviewDTO;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 
 @Mapper(componentModel = "spring")
 public interface StockPredictorMapper 
 {
     @Mapping(source = "date", target = "date", qualifiedByName = "stringToLocalDate")
     public DetailedStockResponse clientDTOToResponse(StockPredictorDetailedStockDTO clientDTO); 
+
+    public StockOverviewResponse clientDTOToResponse(StockPredictorStockOverviewDTO clientDTO);
 
     public default List<SimpleStockResponse> predictionDTOToListOfStockResponse(
         StockPredictorSimpleStockDTO stockPredictionDTO
