@@ -49,3 +49,6 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+//
+//compileOnly 'org.project-lombok:lombok:1.18.22' // Adjust version as needed
+//annotationProcessor 'org.project-lombok:lombok:1.18.22'

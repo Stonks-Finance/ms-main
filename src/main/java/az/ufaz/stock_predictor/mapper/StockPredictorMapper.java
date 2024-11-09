@@ -11,8 +11,10 @@ import org.mapstruct.Named;
 
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorDetailedStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockOverviewDTO;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 
 @Mapper(componentModel = "spring")
 public interface StockPredictorMapper 
@@ -50,4 +52,8 @@ public interface StockPredictorMapper
     {
         return LocalDate.parse(timeString); 
     }
+
+    @Mapping(source = "stockName", target = "stockName")
+    @Mapping(source = "change", target = "change")
+    public List<StockOverviewResponse> stockOverviewDTOListToResponseList(List<StockPredictorStockOverviewDTO> dtoList);
 }
