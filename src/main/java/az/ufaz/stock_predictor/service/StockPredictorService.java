@@ -54,7 +54,7 @@ public class StockPredictorService
             case ONE_DAY: 
                 return Optional.of("1d"); 
             case ONE_MONTH: 
-                return Optional.of("1m");
+                return Optional.of("1mo");
             default: 
                 return Optional.empty(); 
         }
