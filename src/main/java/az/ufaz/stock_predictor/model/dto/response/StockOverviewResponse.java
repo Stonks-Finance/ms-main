@@ -1,7 +1,5 @@
 package az.ufaz.stock_predictor.model.dto.response;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StockOverviewResponse{
+public class StockOverviewResponse
+{
+    @JsonProperty(value = "stock_name")
     private String stockName;
     private String change;
 }

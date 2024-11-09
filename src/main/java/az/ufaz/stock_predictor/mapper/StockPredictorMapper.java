@@ -22,6 +22,8 @@ public interface StockPredictorMapper
     @Mapping(source = "date", target = "date", qualifiedByName = "stringToLocalDate")
     public DetailedStockResponse clientDTOToResponse(StockPredictorDetailedStockDTO clientDTO); 
 
+    public StockOverviewResponse clientDTOToResponse(StockPredictorStockOverviewDTO clientDTO);
+
     public default List<SimpleStockResponse> predictionDTOToListOfStockResponse(
         StockPredictorSimpleStockDTO stockPredictionDTO
     ){
@@ -52,8 +54,4 @@ public interface StockPredictorMapper
     {
         return LocalDate.parse(timeString); 
     }
-
-    @Mapping(source = "stockName", target = "stockName")
-    @Mapping(source = "change", target = "change")
-    public List<StockOverviewResponse> stockOverviewDTOListToResponseList(List<StockPredictorStockOverviewDTO> dtoList);
 }

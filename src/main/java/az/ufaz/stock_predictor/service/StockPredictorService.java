@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import az.ufaz.stock_predictor.client.StockPredictorAIClient;
 import az.ufaz.stock_predictor.exception.PastStockValuesException;
+import az.ufaz.stock_predictor.exception.StockOverviewException;
 import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.exception.UnacceptableInputException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
@@ -179,17 +180,19 @@ public class StockPredictorService
                 .build();
     }
 
-    public BaseResponse<List<StockOverviewResponse>> getStockOverview(){
-        StockPredictorBaseDTO<List<StockPredictorStockOverviewDTO>> stockOverviewDTO =
-                stockPredictorAIClient.getStockOverview();
+    public BaseResponse<List<StockOverviewResponse>> getStockOverview()
+    {
+        StockPredictorBaseDTO<List<StockPredictorStockOverviewDTO>> stockOverviewDTO = stockPredictorAIClient.getStockOverview();
 
-        if(!stockOverviewDTO.isSuccess()){
+        if(!stockOverviewDTO.isSuccess())
+        {
             log.info("Error fetching stock overview: {}", stockOverviewDTO.getMessage());
-            throw new StockPredictionException(stockOverviewDTO.getMessage());
+            throw new StockOverviewException(stockOverviewDTO.getMessage());
         }
-        List<StockOverviewResponse> responseList = stockPredictorMapper.stockOverviewDTOListToResponseList(
-                stockOverviewDTO.getData()
-        );
+        List<StockOverviewResponse> responseList = stockOverviewDTO.getData().stream()
+            .map(stockPredictorMapper::clientDTOToResponse)
+            .collect(Collectors.toList());
+
         log.info("Stock overview retrieved successfully.");
 
         return BaseResponse.<List<StockOverviewResponse>>builder()

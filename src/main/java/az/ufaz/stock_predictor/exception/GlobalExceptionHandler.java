@@ -32,6 +32,17 @@ public class GlobalExceptionHandler
                 .build();
     }
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = StockOverviewException.class)
+    public BaseResponse<Void> handleStockOverviewException(StockOverviewException exception)
+    {
+        return BaseResponse.<Void>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
+
     @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(value = UnacceptableInputException.class)
     public BaseResponse<Void> handleUnacceptableInputException(UnacceptableInputException exception)
