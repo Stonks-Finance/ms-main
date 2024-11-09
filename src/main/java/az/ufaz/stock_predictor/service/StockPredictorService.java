@@ -15,9 +15,11 @@ import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorDetailedStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
+import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockOverviewDTO;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
 import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
 import lombok.RequiredArgsConstructor;
@@ -172,6 +174,27 @@ public class StockPredictorService
         return BaseResponse.<List<DetailedStockResponse>>builder()
                 .data(stockResponses)
                 .message("Past values made successfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+    }
+
+    public BaseResponse<List<StockOverviewResponse>> getStockOverview(){
+        StockPredictorBaseDTO<List<StockPredictorStockOverviewDTO>> stockOverviewDTO =
+                stockPredictorAIClient.getStockOverview();
+
+        if(!stockOverviewDTO.isSuccess()){
+            log.info("Error fetching stock overview: {}", stockOverviewDTO.getMessage());
+            throw new StockPredictionException(stockOverviewDTO.getMessage());
+        }
+        List<StockOverviewResponse> responseList = stockPredictorMapper.stockOverviewDTOListToResponseList(
+                stockOverviewDTO.getData()
+        );
+        log.info("Stock overview retrieved successfully.");
+
+        return BaseResponse.<List<StockOverviewResponse>>builder()
+                .data(responseList)
+                .message("Stock overview fetched succesfully.")
                 .status(HttpStatus.OK.value())
                 .success(true)
                 .build();

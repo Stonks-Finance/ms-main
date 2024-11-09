@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
 import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
 import az.ufaz.stock_predictor.service.StockPredictorService;
@@ -59,6 +60,11 @@ public class StockPredictorController
     ){
         log.info(LOG_TEMPLATE, "GET", "/past-values/detailed");
         return stockPredictorService.getPastValuesOfDetailedStock(stockName, interval, duration);
+    }
+
+    @GetMapping("/stock-overview")
+    public BaseResponse<List<StockOverviewResponse>> getStockOverview(){
+        return stockPredictorService.getStockOverview();
     }
 
 }
