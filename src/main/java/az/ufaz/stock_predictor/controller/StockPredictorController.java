@@ -14,8 +14,8 @@ import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
-import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
-import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionDetailedStockInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionSimpleStockInterval;
 import az.ufaz.stock_predictor.service.StockPredictorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class StockPredictorController
     @ResponseStatus(value = HttpStatus.OK)
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
         @RequestParam(value = "stock_name", required = true) String stockName, 
-        @RequestParam(value = "interval", required = false) StockPredictionShortInterval interval,
+        @RequestParam(value = "interval", required = false) StockPredictionSimpleStockInterval interval,
         @RequestParam(value = "duration", required =  false) int duration
     ){
         log.info(LOG_TEMPLATE, "POST", "/predict");
@@ -45,7 +45,7 @@ public class StockPredictorController
     @ResponseStatus(value = HttpStatus.OK)
     public BaseResponse<List<SimpleStockResponse>> getPastValuesOfSimpleStock(
         @RequestParam(value = "stock_name", required = true) String stockName,
-        @RequestParam(value = "interval", required = false) StockPredictionShortInterval interval,
+        @RequestParam(value = "interval", required = false) StockPredictionSimpleStockInterval interval,
         @RequestParam(value = "duration", required =  false) int duration 
     ){
         log.info(LOG_TEMPLATE, "GET", "/past-values/simple");
@@ -56,7 +56,7 @@ public class StockPredictorController
     @ResponseStatus(value = HttpStatus.OK)
     public BaseResponse<List<DetailedStockResponse>> getPastValuesOfDetailedStock(
         @RequestParam(value = "stock_name", required = true) String stockName,
-        @RequestParam(value = "interval", required = false) StockPredictionLongInterval interval,
+        @RequestParam(value = "interval", required = false) StockPredictionDetailedStockInterval interval,
         @RequestParam(value = "duration", required =  false) int duration 
     ){
         log.info(LOG_TEMPLATE, "GET", "/past-values/detailed");

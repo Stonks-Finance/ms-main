@@ -21,8 +21,8 @@ import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
-import az.ufaz.stock_predictor.model.enums.StockPredictionLongInterval;
-import az.ufaz.stock_predictor.model.enums.StockPredictionShortInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionDetailedStockInterval;
+import az.ufaz.stock_predictor.model.enums.StockPredictionSimpleStockInterval;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class StockPredictorService
     private final StockPredictorAIClient stockPredictorAIClient;
     private final StockPredictorMapper stockPredictorMapper; 
 
-    private Optional<String> getStockPredictionShortIntervalString(StockPredictionShortInterval interval)
+    private Optional<String> getStockPredictionShortIntervalString(StockPredictionSimpleStockInterval interval)
     {
         switch(interval)
         {
@@ -47,7 +47,7 @@ public class StockPredictorService
         }
     }
 
-    private Optional<String> getStockPredictionLongIntervalString(StockPredictionLongInterval interval)
+    private Optional<String> getStockPredictionLongIntervalString(StockPredictionDetailedStockInterval interval)
     {
         switch(interval)
         {
@@ -55,13 +55,15 @@ public class StockPredictorService
                 return Optional.of("1d"); 
             case ONE_MONTH: 
                 return Optional.of("1mo");
+            case ONE_HOUR: 
+                return Optional.of("1h");
             default: 
                 return Optional.empty(); 
         }
     }
 
     public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
-        String stockName, StockPredictionShortInterval interval, int duration
+        String stockName, StockPredictionSimpleStockInterval interval, int duration
     ){
         StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction; 
 
@@ -101,7 +103,7 @@ public class StockPredictorService
     }
 
     public BaseResponse<List<SimpleStockResponse>> getPastValuesOfSimpleStock(
-        String stockName, StockPredictionShortInterval interval, int duration 
+        String stockName, StockPredictionSimpleStockInterval interval, int duration 
     ){
         StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction;
 
@@ -141,7 +143,7 @@ public class StockPredictorService
     }
 
     public BaseResponse<List<DetailedStockResponse>> getPastValuesOfDetailedStock(
-        String stockName, StockPredictionLongInterval interval, int duration
+        String stockName, StockPredictionDetailedStockInterval interval, int duration
     ){
         StockPredictorBaseDTO<List<StockPredictorDetailedStockDTO>> prediction;
 
