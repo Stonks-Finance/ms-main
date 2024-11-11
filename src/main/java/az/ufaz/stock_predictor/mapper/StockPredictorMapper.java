@@ -19,7 +19,7 @@ import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 @Mapper(componentModel = "spring")
 public interface StockPredictorMapper 
 {
-    @Mapping(source = "date", target = "date", qualifiedByName = "stringToLocalDate")
+    @Mapping(source = "timestamp", target = "timestamp", qualifiedByName = "stringToLocalDateTime")
     public DetailedStockResponse clientDTOToResponse(StockPredictorDetailedStockDTO clientDTO); 
 
     public StockOverviewResponse clientDTOToResponse(StockPredictorStockOverviewDTO clientDTO);
@@ -43,6 +43,7 @@ public interface StockPredictorMapper
         return stockResponses;
     }
 
+    @Named(value = "stringToLocalDateTime")
     public default LocalDateTime stringToLocalDateTime(String timeString)
     {
         String dateTimeWithoutOffset = timeString.substring(0, 19);
