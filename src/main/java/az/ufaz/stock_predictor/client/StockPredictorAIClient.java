@@ -38,4 +38,12 @@ public interface StockPredictorAIClient
 
     @GetMapping(value = "/stock-overview")
     public StockPredictorBaseDTO<List<StockPredictorStockOverviewDTO>> getStockOverview();
+
+    @GetMapping(value = "/market_state")
+    public StockPredictorBaseDTO<Boolean> getMarketState();
+
+    @PostMapping(value = "/create_model")
+    public StockPredictorBaseDTO<Void> createStockModel(
+        @RequestParam(value = "stock_name", required = true) String stockName
+    );
 }

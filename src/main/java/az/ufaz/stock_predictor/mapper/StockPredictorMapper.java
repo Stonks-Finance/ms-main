@@ -14,6 +14,7 @@ import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockOverviewDTO;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockMarketStateResponse;
 import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 
 @Mapper(componentModel = "spring")
@@ -23,6 +24,9 @@ public interface StockPredictorMapper
     public DetailedStockResponse clientDTOToResponse(StockPredictorDetailedStockDTO clientDTO); 
 
     public StockOverviewResponse clientDTOToResponse(StockPredictorStockOverviewDTO clientDTO);
+
+    @Mapping(target = "open", source = ".")
+    public StockMarketStateResponse clientDTOToResponse(Boolean clientDTO); 
 
     public default List<SimpleStockResponse> predictionDTOToListOfStockResponse(
         StockPredictorSimpleStockDTO stockPredictionDTO

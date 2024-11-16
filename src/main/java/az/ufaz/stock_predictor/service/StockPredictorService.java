@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import az.ufaz.stock_predictor.client.StockPredictorAIClient;
+import az.ufaz.stock_predictor.exception.MarketStateException;
 import az.ufaz.stock_predictor.exception.PastStockValuesException;
+import az.ufaz.stock_predictor.exception.StockModelCreationException;
 import az.ufaz.stock_predictor.exception.StockOverviewException;
 import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.exception.UnacceptableInputException;
@@ -20,6 +22,7 @@ import az.ufaz.stock_predictor.model.dto.client.StockPredictorStockOverviewDTO;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockMarketStateResponse;
 import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionDetailedStockInterval;
 import az.ufaz.stock_predictor.model.enums.StockPredictionSimpleStockInterval;
@@ -42,6 +45,8 @@ public class StockPredictorService
                 return Optional.of("1h"); 
             case ONE_MINUTE: 
                 return Optional.of("1m");
+            case FIVE_MINUTE: 
+                return Optional.of("5m");
             default: 
                 return Optional.empty(); 
         }
@@ -200,6 +205,46 @@ public class StockPredictorService
         return BaseResponse.<List<StockOverviewResponse>>builder()
                 .data(responseList)
                 .message("Stock overview fetched succesfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+    }
+
+    public BaseResponse<StockMarketStateResponse> getMarketState()
+    {
+        StockPredictorBaseDTO<Boolean> marketStateDTO = stockPredictorAIClient.getMarketState(); 
+
+        if(!marketStateDTO.isSuccess())
+        {
+            log.info("Error fetching market state: {}", marketStateDTO.getMessage());
+            throw new MarketStateException(marketStateDTO.getMessage());
+        }
+
+        StockMarketStateResponse response = stockPredictorMapper.clientDTOToResponse(marketStateDTO.getData());
+        log.info("Market state retrieved successfully.");
+
+        return BaseResponse.<StockMarketStateResponse>builder()
+                .data(response)
+                .message("Market state fetched succesfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+    }
+
+    public BaseResponse<Void> createStockModel(String stockName)
+    {
+        StockPredictorBaseDTO<Void> createModelDTO = stockPredictorAIClient.createStockModel(stockName);
+
+        if(!createModelDTO.isSuccess())
+        {
+            log.info("Error creating stock model: {}", createModelDTO.getMessage());
+            throw new StockModelCreationException(createModelDTO.getMessage());
+        }
+
+        log.info("Stock model created successfully for stock: {}", stockName);
+
+        return BaseResponse.<Void>builder()
+                .message("Stock model created successfully.")
                 .status(HttpStatus.OK.value())
                 .success(true)
                 .build();

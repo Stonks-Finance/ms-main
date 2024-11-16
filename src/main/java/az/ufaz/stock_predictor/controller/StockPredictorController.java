@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import az.ufaz.stock_predictor.model.dto.response.DetailedStockResponse;
 import az.ufaz.stock_predictor.model.dto.response.SimpleStockResponse;
+import az.ufaz.stock_predictor.model.dto.response.StockMarketStateResponse;
 import az.ufaz.stock_predictor.model.dto.response.StockOverviewResponse;
 import az.ufaz.stock_predictor.model.enums.StockPredictionDetailedStockInterval;
 import az.ufaz.stock_predictor.model.enums.StockPredictionSimpleStockInterval;
@@ -63,11 +64,26 @@ public class StockPredictorController
         return stockPredictorService.getPastValuesOfDetailedStock(stockName, interval, duration);
     }
 
-    @GetMapping("/stock-overview")
+    @GetMapping(value = "/stock-overview")
     public BaseResponse<List<StockOverviewResponse>> getStockOverview()
     {
         log.info(LOG_TEMPLATE, "GET", "/stock-overview");
         return stockPredictorService.getStockOverview();
+    }
+
+    @GetMapping(value = "/market-state")
+    public BaseResponse<StockMarketStateResponse> getMarketState()
+    {
+        log.info(LOG_TEMPLATE, "GET", "/market-state");
+        return stockPredictorService.getMarketState();
+    }
+
+    @PostMapping(value = "/create-stock-model")
+    public BaseResponse<Void> createStockModel(
+        @RequestParam(value = "stock_name", required = true) String stockName
+    ){
+        log.info(LOG_TEMPLATE, "POST", "/create-stock-model");
+        return stockPredictorService.createStockModel(stockName);
     }
 
 }

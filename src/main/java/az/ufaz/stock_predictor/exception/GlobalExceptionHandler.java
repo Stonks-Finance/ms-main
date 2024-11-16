@@ -53,4 +53,26 @@ public class GlobalExceptionHandler
                 .status(HttpStatus.NOT_ACCEPTABLE.value())
                 .build();
     }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value =  MarketStateException.class)
+    public BaseResponse<Void> handleMarketStateException(MarketStateException exception)
+    {
+        return BaseResponse.<Void>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = StockModelCreationException.class)
+    public BaseResponse<Void> handleStockModelCreationException(StockModelCreationException exception)
+    {
+        return BaseResponse.<Void>builder()
+                .message(exception.getMessage())
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+    }
 }
