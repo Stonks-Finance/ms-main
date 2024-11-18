@@ -22,14 +22,9 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
-    - name: Debug Docker Variables
-      run: |
-        echo "DOCKER_USERNAME: ${DOCKER_USERNAME}"
-        echo "DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME}"
-
     - name: Build and Push Docker Image
       env:
-        DOCKER_IMAGE_NAME: stock-predictor-ms-main
+        DOCKER_IMAGE_NAME: stock-predictor-backend
       run: |
         docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest" .
         docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
