@@ -26,8 +26,8 @@ jobs:
       env:
         DOCKER_IMAGE_NAME: stock-predictor-backend
       run: |
-        docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest" .
-        docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
+        docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}" .
+        docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}"
 
     - name: Deploy to Render
       env:
