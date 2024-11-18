@@ -25,9 +25,10 @@ jobs:
     - name: Build and Push Docker Image
       env:
         DOCKER_IMAGE_NAME: stock-predictor-backend
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-        docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}" .
-        docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}"
+        docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest" .
+        docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
 
     - name: Deploy to Render
       env:
