@@ -13,35 +13,29 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v2
+    # - name: Set up Docker
+    #   uses: docker/setup-buildx-action@v2
 
-    - name: Log in to DockerHub
-      env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+    # - name: Log in to DockerHub
+    #   env:
+    #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #   run: echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
 
-    - name: Build and Push Docker Image
-      env:
-        DOCKER_IMAGE_NAME: stock-predictor-backend
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      run: |
-        docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest" .
-        docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
+    # - name: Build and Push Docker Image
+    #   env:
+    #     DOCKER_IMAGE_NAME: stock-predictor-backend
+    #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    #   run: |
+    #     docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest" .
+    #     docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
 
     - name: Deploy to Render
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
       run: |
-        curl -X POST \
-        -H "Authorization: Bearer $RENDER_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "serviceId": "srv-csto2c9u0jms73armccg",
-              "clearCache": true,
-              "docker": {
-                "image": "docker.io/${{ secrets.DOCKER_USERNAME }}/stock-predictor:latest"
-              }
-            }' \
-        https://api.render.com/v1/services/srv-csto2c9u0jms73armccg/deploys
+        curl --request POST \
+        --url https://api.render.com/v1/services/srv-csto2c9u0jms73armccg/deploys \
+        --header 'accept: application/json' \
+        --header 'authorization: Bearer $RENDER_API_KEY' \
+        --header 'content-type: application/json'
