@@ -43,8 +43,6 @@ public class StockPredictorService
         {
             case ONE_HOUR: 
                 return Optional.of("1h"); 
-            case FIVE_MINUTE: 
-                return Optional.of("5m");
             default: 
                 return Optional.empty(); 
         }
