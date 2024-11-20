@@ -111,4 +111,34 @@ class StockPredictorServiceTest {
         verifyNoInteractions(stockPredictorAIClient);
         verifyNoInteractions(stockPredictorMapper);
     }
+
+    @Test
+    void testGetStockPrediction_ClientError() {
+        // Arrange
+        String stockName = "AAPL";
+        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        int duration = 5;
+        String intervalString = "1h";
+
+        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> predictionDTO = StockPredictorBaseDTO.<StockPredictorSimpleStockDTO>builder()
+                .data(null)
+                .message("Error fetching prediction")
+                .success(false)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .build();
+
+        when(stockPredictorAIClient.getStockPrediction(stockName, intervalString, duration))
+                .thenReturn(predictionDTO);
+
+        // Act & Assert
+        StockPredictionException exception = assertThrows(StockPredictionException.class, () ->
+                stockPredictorService.getStockPrediction(stockName, interval, duration));
+
+        assertEquals("Error fetching prediction", exception.getMessage());
+
+        verify(stockPredictorAIClient, times(1)).getStockPrediction(stockName, intervalString, duration);
+        verifyNoInteractions(stockPredictorMapper);
+    }
+
 }
+
