@@ -95,4 +95,30 @@ public class StockPredictorControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Test case: Invalid duration parameter.
+     * Endpoint: GET /api/v1/stock_predictor/predict
+     */
+    @Test
+    void testGetStockPrediction_InvalidDuration() throws Exception {
+        // Arrange
+        String stockName = "AAPL";
+        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        int duration = -1; // Invalid duration
+
+        // Simulate the service throwing UnacceptableInputException
+        when(stockPredictorService.getStockPrediction(eq(stockName), eq(interval), eq(duration)))
+                .thenThrow(new UnacceptableInputException("Duration must be greater than 0."));
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+                        .param("stock_name", stockName)
+                        .param("interval", interval.name())
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isNotAcceptable())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Duration must be greater than 0."));
+    }
+
+
 }
