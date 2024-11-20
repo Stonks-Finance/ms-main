@@ -15,4 +15,7 @@ public class StockOverviewResponse
     @JsonProperty(value = "stock_name")
     private String stockName;
     private String change;
+    
+    @JsonProperty(value = "current_price")
+    private double currentPrice;
 }
