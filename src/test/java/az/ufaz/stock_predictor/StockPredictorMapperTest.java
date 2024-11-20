@@ -83,4 +83,16 @@ class StockPredictorMapperTest {
         // Assert
         assertEquals(LocalDateTime.parse("2023-10-25T10:00:00"), result);
     }
+
+    @Test
+    void testStringToLocalDate() {
+        // Arrange
+        String dateString = "2023-10-25";
+
+        // Act
+        LocalDate result = stockPredictorMapper.stringToLocalDate(dateString);
+
+        // Assert
+        assertEquals(LocalDate.of(2023, 10, 25), result);
+    }
 }
