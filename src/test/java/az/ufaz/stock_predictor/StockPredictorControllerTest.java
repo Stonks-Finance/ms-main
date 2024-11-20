@@ -83,4 +83,16 @@ public class StockPredictorControllerTest {
         // Verify
         verify(stockPredictorService, times(1)).getStockPrediction(eq(stockName), eq(interval), eq(duration));
     }
+
+    /**
+     * Test case: Missing required parameters.
+     * Endpoint: GET /api/v1/stock_predictor/predict
+     */
+    @Test
+    void testGetStockPrediction_MissingParameters() throws Exception {
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/predict"))
+                .andExpect(status().isBadRequest());
+    }
+
 }
