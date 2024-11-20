@@ -71,4 +71,16 @@ class StockPredictorMapperTest {
         assertEquals(152.0, response3.getPrice());
         assertEquals(LocalDateTime.parse("2023-10-25T12:00:00"), response3.getTimestamp());
     }
+
+    @Test
+    void testStringToLocalDateTime() {
+        // Arrange
+        String timeString = "2023-10-25T10:00:00Z";
+
+        // Act
+        LocalDateTime result = stockPredictorMapper.stringToLocalDateTime(timeString);
+
+        // Assert
+        assertEquals(LocalDateTime.parse("2023-10-25T10:00:00"), result);
+    }
 }
