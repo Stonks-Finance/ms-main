@@ -266,6 +266,23 @@ public class StockPredictorControllerTest {
         verify(stockPredictorService, times(1)).getStockPrediction(eq(stockName), eq(interval), eq(duration));
     }
 
+    /**
+     * Test case: Missing stock_name parameter.
+     * Endpoint: GET /api/v1/stock_predictor/predict
+     */
+    @Test
+    void testGetStockPrediction_MissingStockName() throws Exception {
+        // Arrange
+        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        int duration = 5;
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+                        .param("interval", interval.name())
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isBadRequest());
+    }
+
 
 
 }
