@@ -1,5 +1,6 @@
 package az.ufaz.stock_predictor;
 import az.ufaz.stock_predictor.exception.GlobalExceptionHandler;
+import az.ufaz.stock_predictor.exception.PastStockValuesException;
 import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.model.dto.response.BaseResponse;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,26 @@ public class GlobalExceptionHandlerTest {
 
         // Act
         BaseResponse<Void> response = exceptionHandler.handleStockPredictionException(exception);
+
+        // Assert
+        assertNotNull(response, "Response should not be null");
+        assertFalse(response.isSuccess(), "Success flag should be false");
+        assertEquals(errorMessage, response.getMessage(), "Error message should match");
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus(), "Status code should be 400");
+        assertNull(response.getData(), "Data should be null");
+    }
+
+    /**
+     * Test case: handlePastStockValuesException should return the correct BaseResponse.
+     */
+    @Test
+    void testHandlePastStockValuesException() {
+        // Arrange
+        String errorMessage = "Error fetching past stock values";
+        PastStockValuesException exception = new PastStockValuesException(errorMessage);
+
+        // Act
+        BaseResponse<Void> response = exceptionHandler.handlePastStockValuesException(exception);
 
         // Assert
         assertNotNull(response, "Response should not be null");
