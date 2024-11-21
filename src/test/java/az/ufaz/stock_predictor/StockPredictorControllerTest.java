@@ -220,5 +220,25 @@ public class StockPredictorControllerTest {
         verify(stockPredictorService, times(1)).getPastValuesOfDetailedStock(eq(stockName), eq(interval), eq(duration));
     }
 
+    /**
+     * Test case: Invalid interval parameter for detailed stock values.
+     * Endpoint: GET /api/v1/stock_predictor/past-values/detailed
+     */
+    @Test
+    void testGetPastValuesOfDetailedStock_InvalidInterval() throws Exception {
+        // Arrange
+        String stockName = "AAPL";
+        String invalidInterval = "INVALID_INTERVAL";
+        int duration = 7;
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/past-values/detailed")
+                        .param("stock_name", stockName)
+                        .param("interval", invalidInterval)
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isBadRequest());
+    }
+
+
 
 }
