@@ -167,5 +167,58 @@ public class StockPredictorControllerTest {
         verify(stockPredictorService, times(1)).getPastValuesOfSimpleStock(eq(stockName), eq(interval), eq(duration));
     }
 
+    /**
+     * Test case: Successful retrieval of past detailed stock values.
+     * Endpoint: GET /api/v1/stock_predictor/past-values/detailed
+     */
+    @Test
+    void testGetPastValuesOfDetailedStock_Success() throws Exception {
+        // Arrange
+        String stockName = "AAPL";
+        StockPredictionLongInterval interval = StockPredictionLongInterval.ONE_DAY;
+        int duration = 7;
+
+        List<DetailedStockResponse> stockResponses = Arrays.asList(
+                DetailedStockResponse.builder()
+                        .date(LocalDate.of(2023, 10, 18))
+                        .open(145.0)
+                        .high(150.0)
+                        .low(144.0)
+                        .close(149.0)
+                        .build(),
+                DetailedStockResponse.builder()
+                        .date(LocalDate.of(2023, 10, 19))
+                        .open(149.5)
+                        .high(151.0)
+                        .low(148.0)
+                        .close(150.0)
+                        .build()
+        );
+
+        BaseResponse<List<DetailedStockResponse>> baseResponse = BaseResponse.<List<DetailedStockResponse>>builder()
+                .data(stockResponses)
+                .message("Past values made successfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+
+        when(stockPredictorService.getPastValuesOfDetailedStock(eq(stockName), eq(interval), eq(duration)))
+                .thenReturn(baseResponse);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/past-values/detailed")
+                        .param("stock_name", stockName)
+                        .param("interval", interval.name())
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Past values made successfully."))
+                .andExpect(jsonPath("$.data[0].open").value(145.0))
+                .andExpect(jsonPath("$.data[1].open").value(149.5));
+
+        // Verify
+        verify(stockPredictorService, times(1)).getPastValuesOfDetailedStock(eq(stockName), eq(interval), eq(duration));
+    }
+
 
 }
