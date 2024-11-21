@@ -239,6 +239,33 @@ public class StockPredictorControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     * Test case: Service throws an exception when predicting stock.
+     * Endpoint: GET /api/v1/stock_predictor/predict
+     */
+    @Test
+    void testGetStockPrediction_ServiceException() throws Exception {
+        // Arrange
+        String stockName = "AAPL";
+        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        int duration = 5;
+
+        when(stockPredictorService.getStockPrediction(eq(stockName), eq(interval), eq(duration)))
+                .thenThrow(new UnacceptableInputException("Invalid input parameters."));
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+                        .param("stock_name", stockName)
+                        .param("interval", interval.name())
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isNotAcceptable())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Invalid input parameters."));
+
+        // Verify
+        verify(stockPredictorService, times(1)).getStockPrediction(eq(stockName), eq(interval), eq(duration));
+    }
+
 
 
 }
