@@ -120,5 +120,52 @@ public class StockPredictorControllerTest {
                 .andExpect(jsonPath("$.message").value("Duration must be greater than 0."));
     }
 
+    /**
+     * Test case: Successful retrieval of past simple stock values.
+     * Endpoint: GET /api/v1/stock_predictor/past-values/simple
+     */
+    @Test
+    void testGetPastValuesOfSimpleStock_Success() throws Exception {
+        // Arrange
+        String stockName = "AAPL";
+        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        int duration = 10;
+
+        List<SimpleStockResponse> stockResponses = Arrays.asList(
+                SimpleStockResponse.builder()
+                        .price(148.0)
+                        .timestamp(LocalDateTime.of(2023, 10, 25, 9, 0))
+                        .build(),
+                SimpleStockResponse.builder()
+                        .price(149.0)
+                        .timestamp(LocalDateTime.of(2023, 10, 25, 9, 1))
+                        .build()
+        );
+
+        BaseResponse<List<SimpleStockResponse>> baseResponse = BaseResponse.<List<SimpleStockResponse>>builder()
+                .data(stockResponses)
+                .message("Past values made successfully.")
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .build();
+
+        when(stockPredictorService.getPastValuesOfSimpleStock(eq(stockName), eq(interval), eq(duration)))
+                .thenReturn(baseResponse);
+
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/stock_predictor/past-values/simple")
+                        .param("stock_name", stockName)
+                        .param("interval", interval.name())
+                        .param("duration", String.valueOf(duration)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Past values made successfully."))
+                .andExpect(jsonPath("$.data[0].price").value(148.0))
+                .andExpect(jsonPath("$.data[1].price").value(149.0));
+
+        // Verify
+        verify(stockPredictorService, times(1)).getPastValuesOfSimpleStock(eq(stockName), eq(interval), eq(duration));
+    }
+
 
 }
