@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 class StockPredictorServiceTest {
 
@@ -41,7 +40,7 @@ class StockPredictorServiceTest {
     void testGetStockPrediction_Success() {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 5;
         String intervalString = "1h";
 
@@ -99,7 +98,7 @@ class StockPredictorServiceTest {
     void testGetStockPrediction_InvalidDuration() {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 0;
 
         // Act & Assert
@@ -116,7 +115,7 @@ class StockPredictorServiceTest {
     void testGetStockPrediction_ClientError() {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 5;
         String intervalString = "1h";
 

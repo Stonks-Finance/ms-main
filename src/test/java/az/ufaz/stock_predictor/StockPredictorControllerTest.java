@@ -7,7 +7,6 @@ import az.ufaz.stock_predictor.model.enums.*;
 import az.ufaz.stock_predictor.service.StockPredictorService;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpStatus;
 
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -45,7 +43,7 @@ public class StockPredictorControllerTest {
     void testGetStockPrediction_Success() throws Exception {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 5;
 
         List<SimpleStockResponse> stockResponses = Arrays.asList(
@@ -103,7 +101,7 @@ public class StockPredictorControllerTest {
     void testGetStockPrediction_InvalidDuration() throws Exception {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_HOUR;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = -1; // Invalid duration
 
         // Simulate the service throwing UnacceptableInputException
@@ -128,7 +126,7 @@ public class StockPredictorControllerTest {
     void testGetPastValuesOfSimpleStock_Success() throws Exception {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 10;
 
         List<SimpleStockResponse> stockResponses = Arrays.asList(
@@ -175,19 +173,19 @@ public class StockPredictorControllerTest {
     void testGetPastValuesOfDetailedStock_Success() throws Exception {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionLongInterval interval = StockPredictionLongInterval.ONE_DAY;
+        StockPredictionDetailedStockInterval interval = StockPredictionDetailedStockInterval.ONE_DAY;
         int duration = 7;
 
         List<DetailedStockResponse> stockResponses = Arrays.asList(
                 DetailedStockResponse.builder()
-                        .date(LocalDate.of(2023, 10, 18))
+                        .timestamp(LocalDateTime.of(2023, 10, 18,0,0,0))
                         .open(145.0)
                         .high(150.0)
                         .low(144.0)
                         .close(149.0)
                         .build(),
                 DetailedStockResponse.builder()
-                        .date(LocalDate.of(2023, 10, 19))
+                        .timestamp(LocalDateTime.of(2023, 10, 19,0,0,0))
                         .open(149.5)
                         .high(151.0)
                         .low(148.0)
@@ -247,7 +245,7 @@ public class StockPredictorControllerTest {
     void testGetStockPrediction_ServiceException() throws Exception {
         // Arrange
         String stockName = "AAPL";
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 5;
 
         when(stockPredictorService.getStockPrediction(eq(stockName), eq(interval), eq(duration)))
@@ -273,7 +271,7 @@ public class StockPredictorControllerTest {
     @Test
     void testGetStockPrediction_MissingStockName() throws Exception {
         // Arrange
-        StockPredictionShortInterval interval = StockPredictionShortInterval.ONE_MINUTE;
+        StockPredictionSimpleStockInterval interval = StockPredictionSimpleStockInterval.ONE_HOUR;
         int duration = 5;
 
         // Act & Assert

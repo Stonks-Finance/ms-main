@@ -22,7 +22,7 @@ class StockPredictorMapperTest {
     void testClientDTOToResponse() {
         // Arrange
         StockPredictorDetailedStockDTO detailedDTO = StockPredictorDetailedStockDTO.builder()
-                .date("2023-10-25")
+                .timestamp("2023-10-25T00:00:00")
                 .open(100.0)
                 .high(110.0)
                 .low(90.0)
@@ -34,7 +34,7 @@ class StockPredictorMapperTest {
 
         // Assert
         assertNotNull(response);
-        assertEquals(LocalDate.of(2023, 10, 25), response.getDate());
+        assertEquals(LocalDateTime.of(2023, 10, 25,0,0,0), response.getTimestamp());
         assertEquals(100.0, response.getOpen());
         assertEquals(110.0, response.getHigh());
         assertEquals(90.0, response.getLow());
