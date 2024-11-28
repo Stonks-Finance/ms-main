@@ -22,6 +22,7 @@ import java.util.*;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -266,7 +267,7 @@ public class StockPredictorControllerTest {
 
     /**
      * Test case: Missing stock_name parameter.
-     * Endpoint: GET /api/v1/stock_predictor/predict
+     * Endpoint: POST /api/v1/stock_predictor/predict
      */
     @Test
     void testGetStockPrediction_MissingStockName() throws Exception {
@@ -275,7 +276,7 @@ public class StockPredictorControllerTest {
         int duration = 5;
 
         // Act & Assert
-        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+        mockMvc.perform(post("/api/v1/stock_predictor/predict")
                         .param("interval", interval.name())
                         .param("duration", String.valueOf(duration)))
                 .andExpect(status().isBadRequest());
