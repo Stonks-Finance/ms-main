@@ -85,12 +85,12 @@ public class StockPredictorControllerTest {
 
     /**
      * Test case: Missing required parameters.
-     * Endpoint: GET /api/v1/stock_predictor/predict
+     * Endpoint: POST /api/v1/stock_predictor/predict
      */
     @Test
     void testGetStockPrediction_MissingParameters() throws Exception {
         // Act & Assert
-        mockMvc.perform(get("/api/v1/stock_predictor/predict"))
+        mockMvc.perform(post("/api/v1/stock_predictor/predict"))
                 .andExpect(status().isBadRequest());
     }
 
