@@ -38,7 +38,7 @@ public class StockPredictorControllerTest {
 
     /**
      * Test case: Successful prediction retrieval.
-     * Endpoint: GET /api/v1/stock_predictor/predict
+     * Endpoint: POST /api/v1/stock_predictor/predict
      */
     @Test
     void testGetStockPrediction_Success() throws Exception {
@@ -69,7 +69,7 @@ public class StockPredictorControllerTest {
                 .thenReturn(baseResponse);
 
         // Act & Assert
-        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+        mockMvc.perform(post("/api/v1/stock_predictor/predict")
                         .param("stock_name", stockName)
                         .param("interval", interval.name())
                         .param("duration", String.valueOf(duration)))
