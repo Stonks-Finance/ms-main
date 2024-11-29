@@ -96,7 +96,7 @@ public class StockPredictorControllerTest {
 
     /**
      * Test case: Invalid duration parameter.
-     * Endpoint: GET /api/v1/stock_predictor/predict
+     * Endpoint: POST /api/v1/stock_predictor/predict
      */
     @Test
     void testGetStockPrediction_InvalidDuration() throws Exception {
@@ -110,7 +110,7 @@ public class StockPredictorControllerTest {
                 .thenThrow(new UnacceptableInputException("Duration must be greater than 0."));
 
         // Act & Assert
-        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+        mockMvc.perform(post("/api/v1/stock_predictor/predict")
                         .param("stock_name", stockName)
                         .param("interval", interval.name())
                         .param("duration", String.valueOf(duration)))
