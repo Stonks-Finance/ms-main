@@ -284,7 +284,7 @@ public class StockPredictorControllerTest {
 
     /**
      * Test case: Invalid interval parameter type.
-     * Endpoint: GET /api/v1/stock_predictor/predict
+     * Endpoint: POST /api/v1/stock_predictor/predict
      */
     @Test
     void testGetStockPrediction_InvalidInterval() throws Exception {
@@ -294,7 +294,7 @@ public class StockPredictorControllerTest {
         int duration = 5;
 
         // Act & Assert
-        mockMvc.perform(get("/api/v1/stock_predictor/predict")
+        mockMvc.perform(post("/api/v1/stock_predictor/predict")
                         .param("stock_name", stockName)
                         .param("interval", invalidInterval)
                         .param("duration", String.valueOf(duration)))
