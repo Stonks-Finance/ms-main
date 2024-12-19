@@ -1,6 +1,6 @@
 # Use an official Gradle image to build the project
 FROM gradle:8.3-jdk17 AS builder
-
+ 
 # Set the working directory
 WORKDIR /app
 
