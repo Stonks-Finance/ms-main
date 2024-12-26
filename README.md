@@ -62,6 +62,5 @@ Contributions are welcome! Follow these steps to contribute:
 * Create a new branch: `git checkout -b feature/your-feature`. 
 * Add your new features.
 * Submit a pull request. 
-<br>
 
 # Thanks for your attention! 
