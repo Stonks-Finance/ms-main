@@ -52,7 +52,9 @@ This project includes CI/CD also. It is continuously deploying to the **Render**
 
 But you should consider one thing, that this project uses Render freely. And because of that, the requests can delay 50 seconds or more. It is something about Render Policy. It says : 
 ```txt
-Free instances spin down after periods of inactivity. They do not support SSH access, scaling, one-off jobs, or persistent disks. Select any paid instance type to enable these features.
+Free instances spin down after periods of inactivity. They do not support SSH access, 
+scaling, one-off jobs, or persistent disks. Select any paid instance type to enable 
+these features.
 ``` 
 
 ## Contributing
