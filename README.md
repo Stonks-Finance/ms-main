@@ -51,11 +51,10 @@ After running application, you can just go to `http://localhost:8080/docs` to me
 This project includes CI/CD also. It is continuously deploying to the **Render**, using **Github Actions**. If you want to see URL of this microservice, you can just go to <a href="https://ms-main.onrender.com/">https://ms-main.onrender.com/</a>. 
 
 But you should consider one thing, that this project uses Render freely. And because of that, the requests can delay 50 seconds or more. It is something about Render Policy. It says : 
-```txt
-Free instances spin down after periods of inactivity. They do not support SSH access, 
-scaling, one-off jobs, or persistent disks. Select any paid instance type to enable 
-these features.
-``` 
+
+<i>
+Free instances spin down after periods of inactivity. They do not support SSH access, scaling, one-off jobs, or persistent disks. Select any paid instance type to enable these features.
+</i>
 
 ## Contributing
 Contributions are welcome! Follow these steps to contribute:
