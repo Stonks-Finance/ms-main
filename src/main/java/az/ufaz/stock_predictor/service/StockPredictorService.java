@@ -75,11 +75,12 @@ public class StockPredictorService
             throw new UnacceptableInputException(message); 
         }
 
-        String intervalString = getStockPredictionShortIntervalString(interval).orElseThrow(() -> {
-            String message = "The interval entered is invalid."; 
-            log.info("Error in stock prediction : {}", message); 
-            return new UnacceptableInputException(message);
-        }); 
+        String intervalString = getStockPredictionShortIntervalString(interval)
+            .orElseThrow(() -> {
+                String message = "The interval entered is invalid."; 
+                log.info("Error in stock prediction : {}", message); 
+                return new UnacceptableInputException(message);
+            }); 
 
         prediction = stockPredictorAIClient.getStockPrediction(stockName, intervalString, duration);
 
@@ -89,9 +90,10 @@ public class StockPredictorService
             throw new StockPredictionException(prediction.getMessage());
         }
 
-        List<SimpleStockResponse> stockResponses = stockPredictorMapper.predictionDTOToListOfStockResponse(
-            prediction.getData()
-        ); 
+        List<SimpleStockResponse> stockResponses = stockPredictorMapper
+            .predictionDTOToListOfStockResponse(
+                prediction.getData()
+            ); 
 
         log.info("Predictions made successfully for stock: {}, interval: {}, duration: {}.", stockName, interval, duration);
 
@@ -115,11 +117,12 @@ public class StockPredictorService
             throw new UnacceptableInputException(message); 
         }
 
-        String intervalString = getStockPredictionShortIntervalString(interval).orElseThrow(() -> {
-            String message = "The interval entered is invalid."; 
-            log.info("Error in stock prediction : {}", message); 
-            return new UnacceptableInputException(message);
-        });
+        String intervalString = getStockPredictionShortIntervalString(interval)
+            .orElseThrow(() -> {
+                String message = "The interval entered is invalid."; 
+                log.info("Error in stock prediction : {}", message); 
+                return new UnacceptableInputException(message);
+            });
 
         prediction = stockPredictorAIClient.getPastValuesOfSimpleStock(stockName, intervalString, duration);
 
@@ -129,9 +132,10 @@ public class StockPredictorService
             throw new PastStockValuesException(prediction.getMessage());
         }
 
-        List<SimpleStockResponse> stockResponses = stockPredictorMapper.predictionDTOToListOfStockResponse(
-            prediction.getData()
-        );
+        List<SimpleStockResponse> stockResponses = stockPredictorMapper
+            .predictionDTOToListOfStockResponse(
+                prediction.getData()
+            );
 
         log.info("Past values made successfully for simple stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
 
@@ -155,11 +159,12 @@ public class StockPredictorService
             throw new UnacceptableInputException(message); 
         }
 
-        String intervalString = getStockPredictionLongIntervalString(interval).orElseThrow(() -> {
-            String message = "The interval entered is invalid."; 
-            log.info("Error in stock prediction : {}", message); 
-            return new UnacceptableInputException(message);
-        });
+        String intervalString = getStockPredictionLongIntervalString(interval)
+            .orElseThrow(() -> {
+                String message = "The interval entered is invalid."; 
+                log.info("Error in stock prediction : {}", message); 
+                return new UnacceptableInputException(message);
+            });
 
         prediction = stockPredictorAIClient.getPastValuesOfDetailedStock(stockName, intervalString, duration);
 
@@ -169,9 +174,9 @@ public class StockPredictorService
             throw new PastStockValuesException(prediction.getMessage());
         }
 
-        List<DetailedStockResponse> stockResponses = prediction.getData().stream().map(
-            stockPredictorMapper::clientDTOToResponse
-        ).collect(Collectors.toList());
+        List<DetailedStockResponse> stockResponses = prediction.getData().stream()
+            .map(stockPredictorMapper::clientDTOToResponse)
+            .collect(Collectors.toList());
 
         log.info("Past values made successfully for detailed stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
 
