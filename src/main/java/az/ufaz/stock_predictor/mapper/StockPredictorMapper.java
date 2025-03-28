@@ -36,12 +36,13 @@ public interface StockPredictorMapper
 
         for (int i = 0; i < length; i++)
         {
-            stockResponses.add(
-                SimpleStockResponse.builder()
-                    .price(stockPredictionDTO.getPrices().get(i))
-                    .timestamp(stringToLocalDateTime(stockPredictionDTO.getTimestamps().get(i)))
-                    .build()   
-            );
+            stockResponses
+                .add(
+                    SimpleStockResponse.builder()
+                        .price(stockPredictionDTO.getPrices().get(i))
+                        .timestamp(stringToLocalDateTime(stockPredictionDTO.getTimestamps().get(i)))
+                        .build()   
+                );
         }
 
         return stockResponses;
