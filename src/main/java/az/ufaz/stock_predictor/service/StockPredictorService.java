@@ -63,17 +63,22 @@ public class StockPredictorService
         }
     }
 
-    public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
-        String stockName, StockPredictionSimpleStockInterval interval, int duration
-    ){
-        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction; 
-
+    private void checkDuration(int duration)
+    {
         if (duration <= 0) 
         {
             String message = "Duration must be greater than 0."; 
             log.info("Error in stock prediction : {}", message);
             throw new UnacceptableInputException(message); 
         }
+    }
+
+    public BaseResponse<List<SimpleStockResponse>> getStockPrediction(
+        String stockName, StockPredictionSimpleStockInterval interval, int duration
+    ){
+        checkDuration(duration);
+
+        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction; 
 
         String intervalString = getStockPredictionShortIntervalString(interval)
             .orElseThrow(() -> {
@@ -91,9 +96,7 @@ public class StockPredictorService
         }
 
         List<SimpleStockResponse> stockResponses = stockPredictorMapper
-            .predictionDTOToListOfStockResponse(
-                prediction.getData()
-            ); 
+            .predictionDTOToListOfStockResponse(prediction.getData()); 
 
         log.info("Predictions made successfully for stock: {}, interval: {}, duration: {}.", stockName, interval, duration);
 
@@ -108,14 +111,9 @@ public class StockPredictorService
     public BaseResponse<List<SimpleStockResponse>> getPastValuesOfSimpleStock(
         String stockName, StockPredictionSimpleStockInterval interval, int duration 
     ){
-        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction;
+        checkDuration(duration);
 
-        if (duration <= 0) 
-        {
-            String message = "Duration must be greater than 0."; 
-            log.info("Error in stock prediction : {}", message);
-            throw new UnacceptableInputException(message); 
-        }
+        StockPredictorBaseDTO<StockPredictorSimpleStockDTO> prediction;
 
         String intervalString = getStockPredictionShortIntervalString(interval)
             .orElseThrow(() -> {
@@ -133,9 +131,7 @@ public class StockPredictorService
         }
 
         List<SimpleStockResponse> stockResponses = stockPredictorMapper
-            .predictionDTOToListOfStockResponse(
-                prediction.getData()
-            );
+            .predictionDTOToListOfStockResponse(prediction.getData());
 
         log.info("Past values made successfully for simple stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
 
@@ -150,14 +146,9 @@ public class StockPredictorService
     public BaseResponse<List<DetailedStockResponse>> getPastValuesOfDetailedStock(
         String stockName, StockPredictionDetailedStockInterval interval, int duration
     ){
-        StockPredictorBaseDTO<List<StockPredictorDetailedStockDTO>> prediction;
+        checkDuration(duration);
 
-        if (duration <= 0) 
-        {
-            String message = "Duration must be greater than 0."; 
-            log.info("Error in stock prediction : {}", message);
-            throw new UnacceptableInputException(message); 
-        }
+        StockPredictorBaseDTO<List<StockPredictorDetailedStockDTO>> prediction;
 
         String intervalString = getStockPredictionLongIntervalString(interval)
             .orElseThrow(() -> {
