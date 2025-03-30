@@ -96,9 +96,7 @@ public class StockPredictorService
         }
 
         List<SimpleStockResponse> stockResponses = stockPredictorMapper
-            .predictionDTOToListOfStockResponse(
-                prediction.getData()
-            ); 
+            .predictionDTOToListOfStockResponse(prediction.getData()); 
 
         log.info("Predictions made successfully for stock: {}, interval: {}, duration: {}.", stockName, interval, duration);
 
@@ -133,9 +131,7 @@ public class StockPredictorService
         }
 
         List<SimpleStockResponse> stockResponses = stockPredictorMapper
-            .predictionDTOToListOfStockResponse(
-                prediction.getData()
-            );
+            .predictionDTOToListOfStockResponse(prediction.getData());
 
         log.info("Past values made successfully for simple stock : {}, interval: {}, duration: {}.", stockName, interval, duration);
 
