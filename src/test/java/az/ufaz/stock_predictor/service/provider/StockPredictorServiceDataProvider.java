@@ -53,20 +53,20 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 4, 20, 30, 0))
                             .build(), 
                         SimpleStockResponse.builder()
-                           .price(192.48828125)
-                           .timestamp(LocalDateTime.of(2025, 4, 4, 21, 30, 0))
-                           .build(), 
-                        SimpleStockResponse.builder()
-                           .price(191.85888671875)
-                           .timestamp(LocalDateTime.of(2025, 4, 4, 22, 30, 0))
+                            .price(192.48828125)
+                            .timestamp(LocalDateTime.of(2025, 4, 4, 21, 30, 0))
                             .build(), 
                         SimpleStockResponse.builder()
-                           .price(191.50152587890625)
-                           .timestamp(LocalDateTime.of(2025, 4, 4, 23, 30, 0))
-                           .build(), 
+                            .price(191.85888671875)
+                            .timestamp(LocalDateTime.of(2025, 4, 4, 22, 30, 0))
+                            .build(), 
                         SimpleStockResponse.builder()
-                           .price(191.41998291015625)
-                           .timestamp(LocalDateTime.of(2025, 4, 5, 0, 30, 0))
+                            .price(191.50152587890625)
+                            .timestamp(LocalDateTime.of(2025, 4, 4, 23, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(191.41998291015625)
+                            .timestamp(LocalDateTime.of(2025, 4, 5, 0, 30, 0))
                             .build()
                     )
                 )
