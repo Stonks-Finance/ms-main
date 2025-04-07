@@ -147,13 +147,13 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
                             .build(),
                         SimpleStockResponse.builder()
-                             .price(106.29403686523438)
-                             .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
-                             .build(), 
+                            .price(106.29403686523438)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build(), 
                         SimpleStockResponse.builder()
-                             .price(106.42002868652344)
-                             .timestamp(LocalDateTime.of(2025, 4, 7, 23, 30, 0))
-                             .build()
+                            .price(106.42002868652344)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 23, 30, 0))
+                            .build()
                     )
                 ),
                 Arguments.of(
@@ -190,6 +190,92 @@ public class StockPredictorServiceDataProvider
                         SimpleStockResponse.builder()
                             .price(106.10931396484375)
                             .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build()
+                    )
+                ),
+                Arguments.of(
+                    "DIS", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    5, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                83.15826416015625,
+                                83.20012664794922,
+                                83.27393341064453,
+                                83.36383819580078,
+                                83.45977783203125
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00",
+                                "2025-04-07T23:30:00+00:00",
+                                "2025-04-08T00:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(83.15826416015625)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.20012664794922)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.27393341064453)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build(),
+                        SimpleStockResponse.builder()
+                            .price(83.36383819580078)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 23, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.45977783203125)
+                            .timestamp(LocalDateTime.of(2025, 4, 8, 0, 30, 0))
+                            .build()
+                    )
+                ),
+                Arguments.of(
+                    "DIS", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    3, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                83.15826416015625,
+                                83.20012664794922,
+                                83.27393341064453
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(83.15826416015625)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.20012664794922)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.27393341064453)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
                             .build()
                     )
                 )
