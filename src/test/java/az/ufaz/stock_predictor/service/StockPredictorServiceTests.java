@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +39,6 @@ public class StockPredictorServiceTests
 
     @ParameterizedTest
     @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProvider.class)
-    @DisplayName(value = "Testing stock prediction when everything is ok")
     public void givenStockPrediction_WhenEverythingIsOk_ThenReturnStockPredictions(
         String stockName, 
         StockPredictionSimpleStockInterval interval, 
@@ -68,7 +66,6 @@ public class StockPredictorServiceTests
     }
 
     @Test
-    @DisplayName(value = "Testing stock prediction when duration is not greater than 0")
     public void givenStockPrediction_WhenDurationIsNotGreaterThanZero_ThenThrowUnacceptableInputException()
     {
         String expectedExceptionMessage = "Duration must be greater than 0."; 
