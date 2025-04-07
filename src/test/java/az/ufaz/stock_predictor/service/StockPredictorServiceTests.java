@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import az.ufaz.stock_predictor.client.StockPredictorAIClient;
+import az.ufaz.stock_predictor.exception.StockPredictionException;
+import az.ufaz.stock_predictor.exception.UnacceptableInputException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
@@ -37,8 +39,7 @@ public class StockPredictorServiceTests
     }
 
     @ParameterizedTest
-    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProvider.class)
-    @DisplayName(value = "Testing stock prediction when everything is ok")
+    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProviderForEverythingIsOkCase.class)
     public void givenStockPrediction_WhenEverythingIsOk_ThenReturnStockPredictions(
         String stockName, 
         StockPredictionSimpleStockInterval interval, 
@@ -63,5 +64,58 @@ public class StockPredictorServiceTests
         Assertions.assertEquals(status, serviceResponse.getStatus());
         Assertions.assertEquals("Predictions made successfully.", serviceResponse.getMessage());
         Assertions.assertEquals(stockResponseList, serviceResponse.getData());
+    }
+
+    @Test
+    public void givenStockPrediction_WhenDurationIsNotGreaterThanZero_ThenThrowUnacceptableInputException()
+    {
+        String expectedExceptionMessage = "Duration must be greater than 0."; 
+        UnacceptableInputException exception = null; 
+
+        try
+        {
+            service.getStockPrediction("AAPL", StockPredictionSimpleStockInterval.ONE_HOUR, 0); 
+        }
+        catch(UnacceptableInputException e)
+        {
+            exception = e;
+        }
+
+        Assertions.assertEquals(expectedExceptionMessage, exception.getMessage());        
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProviderForClientResponseIsNotSuccessCase.class)
+    public void givenStockPrediction_WhenClientResponseIsNotSuccess_ThenThrowStockPredictionException(
+        String stockName, 
+        StockPredictionSimpleStockInterval interval, 
+        int duration, 
+        String intervalString, 
+        int clientStatus,
+        String exceptionMessage
+    ){
+        // Arrange
+        StockPredictionException exception = null; 
+
+        Mockito.when(stockPredictorAIClient.getStockPrediction(stockName, intervalString, duration))
+            .thenReturn(
+                StockPredictorBaseDTO.<StockPredictorSimpleStockDTO>builder()
+                    .message(exceptionMessage)
+                    .status(clientStatus)
+                    .build()
+            ); 
+
+        // Act
+        try
+        {
+            service.getStockPrediction(stockName, interval, duration); 
+        }
+        catch(StockPredictionException e)
+        {
+            exception = e; 
+        }
+
+        // Assert
+        Assertions.assertEquals(exceptionMessage, exception.getMessage());
     }
 }

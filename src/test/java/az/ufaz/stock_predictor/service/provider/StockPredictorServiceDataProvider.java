@@ -15,7 +15,7 @@ import az.ufaz.stock_predictor.model.enums.StockPredictionSimpleStockInterval;
 
 public class StockPredictorServiceDataProvider 
 {
-    public static class StockPredictionProvider implements ArgumentsProvider
+    public static class StockPredictionProviderForEverythingIsOkCase implements ArgumentsProvider
     {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context)
@@ -708,6 +708,40 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
                             .build()
                     )
+                )
+            );
+        }
+    }
+
+    public static class StockPredictionProviderForClientResponseIsNotSuccessCase implements ArgumentsProvider
+    {
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext context)
+        {
+            return Stream.of(
+                Arguments.of(
+                    "aapl", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR, 
+                    5, 
+                    "1h", 
+                    HttpStatus.NOT_FOUND.value(), 
+                    "Model file not found for specified stock."
+                ),
+                Arguments.of(
+                    "AAPL", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR, 
+                    7, 
+                    "1h", 
+                    HttpStatus.BAD_REQUEST.value(), 
+                    "Duration must be between 1 and 6 for interval '1h'."
+                ),
+                Arguments.of(
+                    "a apl", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR, 
+                    5, 
+                    "1h", 
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), 
+                    "Internal server error: Found array with 0 sample(s) (shape=(0, 2)) while a minimum of 1 is required by MinMaxScaler."
                 )
             );
         }
