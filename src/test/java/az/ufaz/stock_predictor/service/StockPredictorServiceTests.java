@@ -71,8 +71,7 @@ public class StockPredictorServiceTests
     @DisplayName(value = "Testing stock prediction when duration is not greater than 0")
     public void givenStockPrediction_WhenDurationIsNotGreaterThanZero_ThenThrowUnacceptableInputException()
     {
-        String message = "Duration must be greater than 0."; 
-        UnacceptableInputException expectedException = new UnacceptableInputException(message);
+        String expectedExceptionMessage = "Duration must be greater than 0."; 
         UnacceptableInputException exception = null; 
 
         try
@@ -84,6 +83,6 @@ public class StockPredictorServiceTests
             exception = e;
         }
 
-        Assertions.assertEquals(expectedException.getMessage(), exception.getMessage());        
+        Assertions.assertEquals(expectedExceptionMessage, exception.getMessage());        
     }
 }
