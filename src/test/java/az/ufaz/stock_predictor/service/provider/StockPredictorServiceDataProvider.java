@@ -622,6 +622,92 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
                             .build()
                     )
+                ), 
+                Arguments.of(
+                    "AMD", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    5, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                83.77082061767578,
+                                83.86018371582031,
+                                84.05424499511719,
+                                84.30230712890625,
+                                84.57881927490234
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00",
+                                "2025-04-07T23:30:00+00:00",
+                                "2025-04-08T00:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(83.77082061767578)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.86018371582031)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(84.05424499511719)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build(),
+                        SimpleStockResponse.builder()
+                            .price(84.30230712890625)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 23, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(84.57881927490234)
+                            .timestamp(LocalDateTime.of(2025, 4, 8, 0, 30, 0))
+                            .build()
+                    )
+                ), 
+                Arguments.of(
+                    "AMD", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    3, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                83.77082061767578,
+                                83.86018371582031,
+                                84.05424499511719
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(83.77082061767578)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(83.86018371582031)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(84.05424499511719)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build()
+                    )
                 )
             );
         }
