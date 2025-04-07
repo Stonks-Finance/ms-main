@@ -69,6 +69,43 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 5, 0, 30, 0))
                             .build()
                     )
+                ), 
+                Arguments.of(
+                    "AAPL", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    3, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                181.9215545654297,
+                                181.32907104492188,
+                                181.1494598388672
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T19:30:00+00:00",
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(181.9215545654297)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 19, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(181.32907104492188)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(181.1494598388672)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build()
+                    )
                 )
             );
         }
