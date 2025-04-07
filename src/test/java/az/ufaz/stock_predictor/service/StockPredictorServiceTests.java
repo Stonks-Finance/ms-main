@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -13,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import az.ufaz.stock_predictor.client.StockPredictorAIClient;
+import az.ufaz.stock_predictor.exception.UnacceptableInputException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorSimpleStockDTO;
@@ -63,5 +65,25 @@ public class StockPredictorServiceTests
         Assertions.assertEquals(status, serviceResponse.getStatus());
         Assertions.assertEquals("Predictions made successfully.", serviceResponse.getMessage());
         Assertions.assertEquals(stockResponseList, serviceResponse.getData());
+    }
+
+    @Test
+    @DisplayName(value = "Testing stock prediction when duration is not greater than 0")
+    public void givenStockPrediction_WhenDurationIsNotGreaterThanZero_ThenThrowUnacceptableInputException()
+    {
+        String message = "Duration must be greater than 0."; 
+        UnacceptableInputException expectedException = new UnacceptableInputException(message);
+        UnacceptableInputException exception = null; 
+
+        try
+        {
+            service.getStockPrediction("AAPL", StockPredictionSimpleStockInterval.ONE_HOUR, 0); 
+        }
+        catch(UnacceptableInputException e)
+        {
+            exception = e;
+        }
+
+        Assertions.assertEquals(expectedException.getMessage(), exception.getMessage());        
     }
 }
