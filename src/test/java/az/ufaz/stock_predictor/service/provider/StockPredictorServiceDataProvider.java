@@ -536,6 +536,92 @@ public class StockPredictorServiceDataProvider
                             .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
                             .build()
                     )
+                ), 
+                Arguments.of(
+                    "NVDA", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    5, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                96.0804672241211,
+                                96.33422088623047,
+                                96.48168182373047,
+                                96.57726287841797,
+                                96.64466857910156
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00",
+                                "2025-04-07T23:30:00+00:00",
+                                "2025-04-08T00:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(96.0804672241211)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(96.33422088623047)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(96.48168182373047)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build(),
+                        SimpleStockResponse.builder()
+                            .price(96.57726287841797)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 23, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(96.64466857910156)
+                            .timestamp(LocalDateTime.of(2025, 4, 8, 0, 30, 0))
+                            .build()
+                    )
+                ),
+                Arguments.of(
+                    "NVDA", 
+                    StockPredictionSimpleStockInterval.ONE_HOUR,
+                    3, 
+                    "1h",
+                    StockPredictorSimpleStockDTO.builder()
+                        .prices(
+                            List.of(
+                                96.0804672241211,
+                                96.33422088623047,
+                                96.48168182373047
+                            )
+                        )
+                        .timestamps(
+                            List.of(
+                                "2025-04-07T20:30:00+00:00",
+                                "2025-04-07T21:30:00+00:00",
+                                "2025-04-07T22:30:00+00:00"
+                            )
+                        )
+                        .build(),
+                    HttpStatus.OK.value(),
+                    List.of(
+                        SimpleStockResponse.builder()
+                            .price(96.0804672241211)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 20, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(96.33422088623047)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 21, 30, 0))
+                            .build(), 
+                        SimpleStockResponse.builder()
+                            .price(96.48168182373047)
+                            .timestamp(LocalDateTime.of(2025, 4, 7, 22, 30, 0))
+                            .build()
+                    )
                 )
             );
         }
