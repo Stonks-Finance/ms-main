@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import az.ufaz.stock_predictor.client.StockPredictorAIClient;
+import az.ufaz.stock_predictor.exception.StockPredictionException;
 import az.ufaz.stock_predictor.exception.UnacceptableInputException;
 import az.ufaz.stock_predictor.mapper.StockPredictorMapper;
 import az.ufaz.stock_predictor.model.dto.client.StockPredictorBaseDTO;
@@ -38,7 +39,7 @@ public class StockPredictorServiceTests
     }
 
     @ParameterizedTest
-    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProvider.class)
+    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProviderForEverythingIsOkCase.class)
     public void givenStockPrediction_WhenEverythingIsOk_ThenReturnStockPredictions(
         String stockName, 
         StockPredictionSimpleStockInterval interval, 
@@ -81,5 +82,40 @@ public class StockPredictorServiceTests
         }
 
         Assertions.assertEquals(expectedExceptionMessage, exception.getMessage());        
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(value = StockPredictorServiceDataProvider.StockPredictionProviderForClientResponseIsNotSuccessCase.class)
+    public void givenStockPrediction_WhenClientResponseIsNotSuccess_ThenThrowStockPredictionException(
+        String stockName, 
+        StockPredictionSimpleStockInterval interval, 
+        int duration, 
+        String intervalString, 
+        int clientStatus,
+        String exceptionMessage
+    ){
+        // Arrange
+        StockPredictionException exception = null; 
+
+        Mockito.when(stockPredictorAIClient.getStockPrediction(stockName, intervalString, duration))
+            .thenReturn(
+                StockPredictorBaseDTO.<StockPredictorSimpleStockDTO>builder()
+                    .message(exceptionMessage)
+                    .status(clientStatus)
+                    .build()
+            ); 
+
+        // Act
+        try
+        {
+            service.getStockPrediction(stockName, interval, duration); 
+        }
+        catch(StockPredictionException e)
+        {
+            exception = e; 
+        }
+
+        // Assert
+        Assertions.assertEquals(exceptionMessage, exception.getMessage());
     }
 }
